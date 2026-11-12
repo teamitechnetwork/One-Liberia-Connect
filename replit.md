@@ -9,7 +9,7 @@ Multi-page marketing site for One Liberia Connect, a division of One Liberia Ent
 - `pnpm --filter @workspace/one-liberia-connect run typecheck` — check TypeScript
 - `pnpm --filter @workspace/one-liberia-connect run lint` — run ESLint
 - Optional email delivery: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`
-- Optional canonical URL: `NEXT_PUBLIC_SITE_URL` (defaults to `https://1liberia.org`)
+- Optional canonical URL: `NEXT_PUBLIC_SITE_URL` (defaults to the Vercel deployment URL; localhost during local development)
 
 ## Stack
 
