@@ -30,7 +30,7 @@ Contact details are intentionally marked as placeholders until the organization 
 
 ## Email environment variables
 
-Copy `.env.example` as a reference. Keep the Resend API key in your environment's secret manager; do not commit it. Add the three email variables in Replit Secrets for preview or in the Vercel project's environment settings for production. Set `NEXT_PUBLIC_SITE_URL` if the canonical domain differs from `https://1liberia.org`.
+Copy `.env.example` as a reference. Keep the Resend API key in your environment's secret manager; do not commit it. Add the three email variables in your deployment environment. Set `NEXT_PUBLIC_SITE_URL` to the canonical domain once one is chosen; on Vercel it otherwise uses the deployment URL.
 
 ## Image slots
 
@@ -54,10 +54,10 @@ Images use `next/image`, descriptive alternate text, and intrinsic/fill sizing t
 
 This site is a Next.js app inside a pnpm monorepo. Import the repository into Vercel and configure the project to deploy this app:
 
-1. Set **Root Directory** to `artifacts/one-liberia-connect` and keep the Next.js framework preset.
+1. Set **Root Directory** to `artifacts/one-liberia-connect`, keep the Next.js framework preset, and do not set a static output directory.
 2. Keep Vercel's detected install and build commands. The app's build script runs `next build`; its Node.js requirement is `>=20.9.0`.
 3. To use the repository's pinned pnpm version, add `ENABLE_EXPERIMENTAL_COREPACK=1` as a Vercel build environment variable.
-4. Add `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, and `NEXT_PUBLIC_SITE_URL` to the Vercel environments where the app will run. Set the site URL to the canonical public origin, currently `https://1liberia.org`.
+4. Add `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and `CONTACT_FROM_EMAIL` to the Vercel environments where the app will run. Add `NEXT_PUBLIC_SITE_URL` when the new canonical domain is chosen.
 5. Keep the Resend API key in Vercel's environment settings; never commit it. Redeploy after changing environment variables.
 
 The email variables are required for live inquiry delivery. Without them, the form only shows a preview success message and does not save or send the inquiry. `NEXT_PUBLIC_SITE_URL` supplies the canonical URL used for metadata, the sitemap, and robots.
