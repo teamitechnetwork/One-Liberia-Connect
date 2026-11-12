@@ -50,8 +50,16 @@ All photography and logo are local files in `public/images`. Replace a file at t
 
 Images use `next/image`, descriptive alternate text, and intrinsic/fill sizing to avoid layout shift. Hero images are prioritized; other images are loaded lazily by Next.js.
 
-## Deployment
+## Deploy on Vercel
 
-Deploy as a standard Next.js App Router application (including on Vercel). In a Vercel monorepo project, set the root directory to `artifacts/one-liberia-connect`; Next.js will be detected and the `build` script will run. Add the email variables above and set `NEXT_PUBLIC_SITE_URL` to the canonical public origin if it differs from `https://1liberia.org`; this value is used for metadata, sitemap, and robots.
+This site is a Next.js app inside a pnpm monorepo. Import the repository into Vercel and configure the project to deploy this app:
+
+1. Set **Root Directory** to `artifacts/one-liberia-connect` and keep the Next.js framework preset.
+2. Keep Vercel's detected install and build commands. The app's build script runs `next build`; its Node.js requirement is `>=20.9.0`.
+3. To use the repository's pinned pnpm version, add `ENABLE_EXPERIMENTAL_COREPACK=1` as a Vercel build environment variable.
+4. Add `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, and `NEXT_PUBLIC_SITE_URL` to the Vercel environments where the app will run. Set the site URL to the canonical public origin, currently `https://1liberia.org`.
+5. Keep the Resend API key in Vercel's environment settings; never commit it. Redeploy after changing environment variables.
+
+The email variables are required for live inquiry delivery. Without them, the form only shows a preview success message and does not save or send the inquiry. `NEXT_PUBLIC_SITE_URL` supplies the canonical URL used for metadata, the sitemap, and robots.
 
 The privacy and terms pages are clearly marked drafts and must be reviewed by qualified counsel before production publication.

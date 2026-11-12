@@ -1,13 +1,84 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Building2, Handshake, Radio, UsersRound, Globe2, ShieldCheck, Compass, HeartHandshake, GraduationCap, BriefcaseBusiness, BookOpen, MapPin, MessagesSquare } from "lucide-react";
-import { services, steps } from "@/content/site";
+import { pageHeroes, services, steps } from "@/content/site";
 import { Reveal } from "@/components/Reveal";
 
 export const imageBlurData = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect width='1' height='1' fill='%23eaf2fc'/%3E%3C/svg%3E";
 
-export function PageHero({ title, crumb = title, intro }: { title:string; crumb?:string; intro?:string }) {
-  return <section className="page-hero"><div className="container"><div className="crumb"><Link href="/">Home</Link><span>/</span><span>{crumb}</span></div><h1>{title}</h1>{intro&&<p className="hero-intro">{intro}</p>}</div></section>;
+type PageHeroAction = { label: string; href: string };
+type PageHeroProps = {
+  title: string;
+  crumb?: string;
+  intro?: string;
+  eyebrow?: string;
+  image?: string;
+  imageAlt?: string;
+  variant?: "standard" | "document";
+  actions?: PageHeroAction[];
+};
+
+export function PageHero({
+  title,
+  crumb = title,
+  intro,
+  eyebrow,
+  image,
+  imageAlt,
+  variant,
+  actions,
+}: PageHeroProps) {
+  const content = pageHeroes[title as keyof typeof pageHeroes];
+  const resolvedImage = image ?? content?.image;
+  const resolvedIntro = intro ?? content?.intro;
+  const resolvedEyebrow = eyebrow ?? content?.eyebrow ?? "One Liberia Connect";
+  const resolvedImageAlt = imageAlt ?? content?.imageAlt ?? title;
+  const resolvedVariant = variant ?? content?.variant ?? "standard";
+  const resolvedActions = actions ?? content?.actions ?? [];
+
+  return (
+    <section className={`page-hero ${resolvedImage ? "page-hero--image" : ""} ${resolvedVariant === "document" ? "page-hero--document" : ""}`}>
+      <div className="container page-hero-grid">
+        <div className="page-hero-copy">
+          <nav className="crumb" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{crumb}</span>
+          </nav>
+          <div className="page-hero-eyebrow">{resolvedEyebrow}</div>
+          <h1>{title}</h1>
+          {resolvedIntro && <p className="hero-intro">{resolvedIntro}</p>}
+          {resolvedActions.length > 0 && (
+            <div className="page-hero-actions">
+              {resolvedActions.map((action, index) => (
+                <Link
+                  className={index === 0 ? "btn btn-primary" : "btn btn-outline"}
+                  href={action.href}
+                  key={action.href}
+                >
+                  {action.label}
+                  {index === 0 ? <ArrowRight size={17} /> : <ArrowUpRight size={16} />}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+        {resolvedImage && (
+          <div className="page-hero-image">
+            <Image
+              src={resolvedImage}
+              alt={resolvedImageAlt}
+              fill
+              priority
+              sizes="(max-width: 760px) 100vw, 44vw"
+              placeholder="blur"
+              blurDataURL={imageBlurData}
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
 export function SectionLabel({children}:{children:string}) { return <div className="eyebrow">{children}</div>; }
 export function Photo({src,alt,priority=false}:{src:string;alt:string;priority?:boolean}) { return <div className="image-frame"><Image src={src} alt={alt} fill sizes="(max-width: 760px) 100vw, 50vw" priority={priority} placeholder="blur" blurDataURL={imageBlurData} /></div>; }
